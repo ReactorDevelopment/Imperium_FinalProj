@@ -466,7 +466,7 @@ public class GameActivity extends BuildActivity {
             fos = new FileOutputStream(save);
             fos.write(saveString.getBytes());
             fos.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (IOException e) { e.printStackTrace(); }
 
         try{ Toast.makeText(context, "Saved to " + SAVE_PATH + "/" + saveId, Toast.LENGTH_LONG).show();
         }catch (RuntimeException e){e.printStackTrace();}

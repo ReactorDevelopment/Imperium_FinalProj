@@ -296,21 +296,20 @@ public class OpenSaveActivity extends AppCompatActivity {
     }
     /**Retrieves the contents of a save file*/
     private String loadGame(String saveId){
-        FileInputStream fis = null;
+        FileInputStream fileIn = null;
         StringBuilder sb = new StringBuilder();
         try {
-            fis = new FileInputStream(saveId);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
+            fileIn = new FileInputStream(saveId);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileIn);
+            BufferedReader br = new BufferedReader(inputStreamReader);
             String text;
             while ((text = br.readLine()) != null)
                 sb.append(text).append("\n");
 
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (IOException e) { e.printStackTrace(); }
         finally {
-            if (fis != null) {
-                try { fis.close(); } catch (IOException e) { e.printStackTrace(); }
-            }
+            if (fileIn != null)
+                try { fileIn.close(); } catch (IOException e) { e.printStackTrace(); }
         }
         return sb.toString();
     }

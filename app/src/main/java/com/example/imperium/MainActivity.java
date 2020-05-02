@@ -27,6 +27,8 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 //7/30/19
@@ -133,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
             fos = new FileOutputStream(save);
             fos.write(readme.getBytes());
             fos.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (IOException e) { e.printStackTrace(); }
 
     }
     /**Tints the status bar on the device to a matching color*/
@@ -150,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 Method method = cls.getDeclaredMethod("setStatusBarColor",
                         new Class<?>[] { Integer.TYPE });
                 method.invoke(window, Color.parseColor("#854705"));
-            } catch (Exception e) {/* upgrade your SDK and ADT :D*/}
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {}
 
         }
     }
@@ -171,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finishAffinity();
                 System.exit(0);
             }
         });
