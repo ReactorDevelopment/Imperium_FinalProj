@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.imperium.BuildActivity">
+
+
+    <ImageView
+        android:id="@+id/backround"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/options" />
+
+    <TextView
+        android:id="@+id/classicTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Classic Map"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.264" />
+
+    <ImageView
+        android:id="@+id/classicMap"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent=".6"
+        app:layout_constraintHeight_percent=".2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/classicTitle"
+        app:layout_constraintStart_toStartOf="@+id/classicTitle"
+        app:layout_constraintTop_toBottomOf="@+id/classicTitle"
+        app:layout_constraintVertical_bias="0.043"
+        app:srcCompat="@drawable/mapfit" />
+
+    <SeekBar
+        android:id="@+id/playerSelect"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_bias=".1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/classicMap"
+        app:layout_constraintHeight_percent=".05"
+        app:layout_constraintStart_toStartOf="@+id/classicMap"
+        app:layout_constraintTop_toBottomOf="@+id/classicMap" />
+
+    <TextView
+        android:id="@+id/playersTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Select Number Of Players"
+        app:layout_constraintBottom_toTopOf="@+id/playerSelect"
+        app:layout_constraintEnd_toEndOf="@+id/playerSelect"
+        app:layout_constraintStart_toStartOf="@+id/playerSelect" />
+
+    <AbsoluteLayout
+        android:id="@+id/flagCanvas"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintHeight_percent=".1"
+        app:layout_constraintVertical_bias=".1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/playerSelect"
+        app:layout_constraintStart_toStartOf="@+id/playerSelect"
+        app:layout_constraintTop_toBottomOf="@+id/playerSelect"></AbsoluteLayout>
+
+    <Button
+        android:id="@+id/makeGame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent=".07"
+        app:layout_constraintVertical_bias=".45"
+        app:layout_constraintWidth_percent=".5"
+        android:background="@android:color/transparent"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/flagCanvas"
+        app:layout_constraintStart_toStartOf="@+id/flagCanvas"
+        app:layout_constraintTop_toBottomOf="@+id/flagCanvas" />
+
+</android.support.constraint.ConstraintLayout>
