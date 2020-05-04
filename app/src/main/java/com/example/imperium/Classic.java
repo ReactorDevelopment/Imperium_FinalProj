@@ -3,9 +3,10 @@ package com.example.imperium;
 import android.content.Context;
 import android.graphics.Color;
 import java.util.ArrayList;
-
+/**Outlines where to place provinces on map*/
 public class Classic extends Map {
 public static final int MAP_DRAWABLE = R.drawable.map;
+	/**Initalizes fields*/
     public Classic(Context context){
         provinceList = new Province[44];
         id = 0;
@@ -16,6 +17,7 @@ public static final int MAP_DRAWABLE = R.drawable.map;
         mapFilePath = "classicMap/";
         assemble(context);
     }
+    /**Adds provinces to map, setting their positions and assigning them to continents*/
     public void assemble(Context context){
         double scaleX = 1;
         double scaleY = 1;

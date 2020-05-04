@@ -75,6 +75,7 @@ public class OpenSaveActivity extends AppCompatActivity {
     private int listSaves(){
         saveLister = findViewById(R.id.savesList);
         scrollList = findViewById(R.id.scrollList);
+        //adds and sets height of the endcaps of the scroll
         top = new ImageView(context);
         bottom = new ImageView(context);
 
@@ -84,7 +85,7 @@ public class OpenSaveActivity extends AppCompatActivity {
         bottom.setBackgroundResource(R.drawable.scrollbottom);
         bottom.setLayoutParams(new LinearLayout.LayoutParams((int)(.1 * fileWidth), (int)(.3 * fileHeight)));
         bottom.setX(scrollPadding);
-
+        //sorts the files based on their last date of modification
         Log.d("Files", "Path: " + SAVE_PATH);
         File directory = new File(SAVE_PATH);
         File[] files = directory.listFiles();
@@ -103,6 +104,7 @@ public class OpenSaveActivity extends AppCompatActivity {
         }
         Log.d("Files", "Size: "+ files.length);
         scrollList.addView(top);
+        //initalizes every listTextView
         savesList = new ListTextView[files.length];
         for (int i = 0; i < files.length; i++) {
             makeText(files[i].getName(), i);
@@ -158,6 +160,7 @@ public class OpenSaveActivity extends AppCompatActivity {
      * that toggles the selection and highlight of the view and adds it to the saves layout*/
     private void makeText(final String NAME, final int id){
         savesList[id] = new ListTextView(context, id);
+        //initalizes colors and positions
         savesList[id].getTextView().setLayoutParams(new LinearLayout.LayoutParams(fileWidth, fileHeight));
         savesList[id].getBackText().setLayoutParams(new LinearLayout.LayoutParams(fileWidth, fileHeight));
         savesList[id].animateTo(0, id * fileHeight, 0);
@@ -169,6 +172,7 @@ public class OpenSaveActivity extends AppCompatActivity {
         savesList[id].getTextView().setTextColor(Color.parseColor("#c7ccd4"));
         savesList[id].getBackText().setTextColor(Color.parseColor("#000000"));
         savesList[id].setText(NAME);
+        //initalizes toggle to select and deselect
         savesList[id].getTextView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,6 +184,7 @@ public class OpenSaveActivity extends AppCompatActivity {
                 savesList[id].setSelected(!savesList[id].getSelected());
             }
         });
+        //adds all components to view
         scrollList.addView(savesList[id].getImageView());
         saveLister.addView(savesList[id].getBackText());
         saveLister.addView(savesList[id].getTextView());
@@ -267,8 +272,10 @@ public class OpenSaveActivity extends AppCompatActivity {
                 Toast.makeText(context, "Select a file to delete" , Toast.LENGTH_SHORT).show();
             }
         });
+        //components for 'are you sure' popup
         ImageButton yes = findViewById(R.id.yes);
         yes.setBackgroundResource(R.drawable.savesdel);
+        //deletes and hides
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -284,6 +291,7 @@ public class OpenSaveActivity extends AppCompatActivity {
 
             }
         });
+        //hides
         ImageButton no = findViewById(R.id.no);
         no.setBackgroundResource(R.drawable.cancel);
         no.setOnClickListener(new View.OnClickListener() {

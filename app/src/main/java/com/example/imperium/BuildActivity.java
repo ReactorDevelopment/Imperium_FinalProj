@@ -88,6 +88,7 @@ public class BuildActivity extends MainActivity {
         ai1.setBackgroundResource(R.drawable.helmet);
         ai2 = new ImageView(context);
         ai2.setBackgroundResource(R.drawable.helmet);
+        //toggles if player is computer
         ai0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +139,7 @@ public class BuildActivity extends MainActivity {
         player2.setBackgroundResource(R.drawable.green);
 
         createAiSelect();
+        //manages how to place flags based on progressBar progress, also snapping the bar either to full or to zero
         int masterWidth = (int)(screenWidth*.5*.12);
         int masterHeight = (int)(screenHeight*.07*.5);
         final int layoutW = (int)(screenWidth*.6);

@@ -11,17 +11,27 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import static android.graphics.Color.*;
-
+/**Game object that manages game interaction and rules*/
 public class Game extends GameActivity implements java.io.Serializable {
+    /**Player that wins a game*/
     private Player wiener;
+    /**the player that is allowed to play*/
     private static int currentPlayer = 0;
+    /**How many troops to transport the transport troops slide indivcates*/
     private int slideValue;
+    /**Array of players in the game*/
     private static Player[] players;
+    /**The 0-100 value of the transport troops slide*/
     private static int slideProgress;
+    /**The current turn of the game*/
     private static int turnNum;
+    /**Keeps plyer from transporting twice at once*/
     private static boolean ran;
+    /**If the transport diologue is open*/
     private static boolean transporting;
+    /**If the attack diologue is open*/
     private static boolean attacking;
+    /**The map the game uses*/
     private static Map map;
     /**Changes the stage of the turn the player is on or changes the player*/
     private static ImageButton change;
@@ -156,6 +166,7 @@ public class Game extends GameActivity implements java.io.Serializable {
                                         endTransport();
                                     }
                                 }
+                                //Sets the text for the images that flank the roll image
                                 if(getCurrentPlayer().attackScan()){
                                     attackerTroops.setText("" + getCurrentPlayer().getSelected()[0].modTroops(0));
                                     defenderTroops.setText("" + getCurrentPlayer().getSelected()[1].modTroops(0));
@@ -165,13 +176,16 @@ public class Game extends GameActivity implements java.io.Serializable {
                                 if(getCurrentPlayer().select(0) > 2){
                                     getCurrentPlayer().select(-getCurrentPlayer().select(0) + 2);
                                 }
+                                //Keeps the status text up to date
                                 status.setText("Player: " + currentPlayer + ", Stage: " + getCurrentPlayer().getStage()
                                         + ", Reinforcements: " +  getCurrentPlayer().modTroops(0)
                                         + ", Infamy: " + (int)(getCurrentPlayer().getInfamy()*100)/100.0);
+                                //makes sure the map is always in view
                                 inBounds();
                                 //status.bringToFront();
                                 slider.bringToFront();
                                 map.updateAllOverlays();
+                                //Checks for a winner
                                 chickenDinner();
                                 updateProvinces();
                             }
@@ -186,6 +200,7 @@ public class Game extends GameActivity implements java.io.Serializable {
     private void chickenDinner(){
         winCover = getWinCover();
         winCover.setVisibility(View.INVISIBLE);
+        //If any player owns all of the map
         if(map.allOwned(players[0])) {
             wiener = players[0];
             winCover.setBackgroundResource(R.drawable.winnerblue);
@@ -205,7 +220,7 @@ public class Game extends GameActivity implements java.io.Serializable {
             changeAllSelection(false);
             endAttack();
             endTransport();
-            getCurrentPlayer().setStage(69);
+            getCurrentPlayer().setStage(9);
             winCover.setVisibility(View.VISIBLE);
         }
     }
@@ -264,6 +279,7 @@ public class Game extends GameActivity implements java.io.Serializable {
                     getCurrentPlayer().transport(slideValue);
                     toStageZero();
                 }
+                //prevents player form tansporting twice
                 if(getCurrentPlayer().getStage() == 1 && transporting && ran) {
                     Log.i("transporting", "againEnded, Ran? " + ran);
                     getCurrentPlayer().transport(slideValue);
@@ -278,6 +294,7 @@ public class Game extends GameActivity implements java.io.Serializable {
     private void retreat(){
         retreat = getRetreat();
         retreat.setBackgroundColor(TRANSPARENT);
+        //closes the attack diologue and ceases attack
         retreat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 changeAllSelection(false);
@@ -325,6 +342,8 @@ public class Game extends GameActivity implements java.io.Serializable {
                 sliderImage.bringToFront();
                 int add0 = 0;
                 int add1 = 0;
+                //trnasports a percentage of troops from one province to the other depending on how far right or left the slider is
+                //left transports from A to B and right from B to A
                 if(getCurrentPlayer().getStage() == 2) {
                     if (progress < 50) {
                         slideValue = (int) ((getCurrentPlayer().getSelected()[1].modTroops(0) - 1) * (1 - progress / 50.0));
@@ -381,6 +400,7 @@ public class Game extends GameActivity implements java.io.Serializable {
         aDie3.setText("" + rolls[2]);
         dDie1.setText("" + rolls[3]);
         dDie2.setText("" + rolls[4]);
+        //Shoes the winner of each dice roll
         if(rolls[0] > rolls[3])
             defeated.setRotation(0);
         else if(rolls[0] < rolls[3])
@@ -400,11 +420,7 @@ public class Game extends GameActivity implements java.io.Serializable {
         if(getMapLayout().getScaleX() < 1.3f)
             getMapLayout().animate().x(-30).y(-22).setDuration((long) (2000 * Math.pow(getMapLayout().getScaleX(), 2) / Math.sqrt(vector)));
     }
-    /**Saves the current state for the troops in a province*/
-    /*private void saveAllTroops(){
-        for (int i=0; i<map.getList().length; i++)
-            getMap().getList()[i].saveTroops();
-    }*/
+
     /**Used to convert the ais array to a string to be saved*/
     private String aisToString(){
         String list = "";
@@ -441,10 +457,12 @@ public class Game extends GameActivity implements java.io.Serializable {
     public void setCurrentPlayer(int set){currentPlayer = set;}
     /**Logic for switching from one players turn to another,  adding reinforcements to players if the turn is appropriate*/
     public void changePlayer(boolean adding){
+        //cycles to th next player in a loop
         if(currentPlayer < players.length-1)
             currentPlayer++;
         else
             currentPlayer = 0;
+        //sets the player stage to -1 if the map is still being set up, or to 0 otherwise
         getCurrentPlayer().setStage(-1);
         if(adding) {
             getCurrentPlayer().modTroops(3 + map.bonuses(getCurrentPlayer()) + (int) getCurrentPlayer().getInfamy());
@@ -476,6 +494,7 @@ public class Game extends GameActivity implements java.io.Serializable {
         else if(turnNum<=99) save += "0"+turnNum;
         else if(turnNum>99) save += ""+turnNum;
         //Log.i("gameSave2", "saved: " + save);
+        //converts info of all provinces to a string
         for(int i=0; i<map.getList().length; i++){
             Province pAt = map.getList()[i];
             save += ""+pAt.getOwnerId();
@@ -486,6 +505,7 @@ public class Game extends GameActivity implements java.io.Serializable {
             //Log.i("gameSave4", "saved: " + save);
         }
         save += players.length;
+        //converts player info to a string
         for(int i=0; i<players.length; i++){
             Player plAt = players[i];
             save+=""+plAt.getStage();

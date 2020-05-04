@@ -150,9 +150,11 @@ public class Player extends Game{
         int[] losses;
         int[] rolls = new int[5];
         stage = 1;
+        //if two provinces are valid for attack
         if(attackScan()) {
             Log.i("attack", "scanned");
             losses = roll(selected[0].modTroops(0), selected[1].modTroops(0));
+            //modifies troops based on calculated dice rolls
             selected[0].modTroops(losses[0]);
             selected[1].modTroops(losses[1]);
             selected[0].setText("" + selected[0].modTroops(0));
@@ -160,10 +162,12 @@ public class Player extends Game{
             Log.i("attack", "troops" + selected[1].modTroops(0));
             for (int i = 0; i < 5; i++)
                 rolls[i] = losses[i + 2];
+            //if the defending province looses
             if(selected[1].modTroops(0) == 0) {
                 conquers++;
                 calcInfamy();
                 Log.i("defeated", "" + selected[1].getName() + "defeated");
+                //transfer ownership
                 selected[1].updatePress(selected[0].getOwnerId());
                 if(selected[0].modTroops(0) > 3) {
                     selected[0].modTroops(-3);
@@ -266,6 +270,7 @@ public class Player extends Game{
         Log.i("rolls", "aRolls2: " + aRolls[2]);
         Log.i("rolls", "aRolls1: " + aRolls[1]);
         Log.i("rolls", "aRolls0: " + aRolls[0]);
+        //sorts roll
         bubbleSort(aRolls);
         bubbleSort(dRolls);
         temp = aRolls[0];
@@ -289,6 +294,7 @@ public class Player extends Game{
             else
                 aLoss--;
         }
+        //outputs results of battle
         aftermath[0] = aLoss;
         aftermath[1] = dLoss;
         aftermath[2] = aRolls[0];

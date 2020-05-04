@@ -152,7 +152,7 @@ public class Province extends Continent implements Serializable {
         else showSelected.setVisibility(View.INVISIBLE);
     }
 
-
+    /**builds comps and assigns borders*/
     public void place() {
         bordering = new Province[borders.length];
         for (int i = 0; i < bordering.length; i++)
@@ -246,6 +246,7 @@ public class Province extends Continent implements Serializable {
             Log.i("doClick", "did, Stage:" + getCurrentPlayer().getStage() + "PLayerId: "+getCurrentPlayer().getId() + "OwnerId: "+ownerId);
             if (getCurrentPlayer().getStage() == -1 && (ownerId == -1 || ownerId == getCurrentPlayer().getId())) {
                 boolean did = false;
+                //claims a new province while map is not full
                 if (!imperium && getCurrentPlayer().getTroops() > 0) {
                     if (getMap().allTaken()) {
                         modTroops(1);
@@ -261,6 +262,7 @@ public class Province extends Continent implements Serializable {
                         getCurrentPlayer().modTroops(-1);
                         did = true;
                     }
+                    //ends setup phase of the game
                 }else{
                     getCurrentPlayer().setStage(0);
                 }
@@ -270,6 +272,7 @@ public class Province extends Continent implements Serializable {
                     changePlayer(false);
                 }
             }
+            //increments troops on province by 1 and removes reinforcement
             if (getCurrentPlayer().getStage() == 0 && ownerId == getCurrentPlayer().getId()) {
                 Log.i("ClickDelay1", ""+(System.currentTimeMillis()-startClick));
                 if (!imperium && getCurrentPlayer().getTroops() > 0) {
@@ -277,6 +280,7 @@ public class Province extends Continent implements Serializable {
                     getCurrentPlayer().modTroops(-1);
                     getCurrentPlayer().setTempProvince(getMap().getList()[id - 1]);
                 }
+                //selects province for either attack or transport
             } else if (getCurrentPlayer().getStage() == 1 || getCurrentPlayer().getStage() == 2) {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -298,6 +302,7 @@ public class Province extends Continent implements Serializable {
 
     /**Initializes the views of the province, notably extracting the bitmap file form the assets folder*/
     private void buildComps(){
+        //loads bitmap and assigns it to the overlay
         try{
             InputStream in = context.getAssets().open("overlays/"+getMap().getMapFilePath()+id+".png");
             byte[] inBytes = new byte[in.available()];
@@ -310,6 +315,7 @@ public class Province extends Continent implements Serializable {
             overlay.setImageBitmap(overBit);
             //Log.i("provId", ""+id+", Bitwidth:"+overBit.getWidth()+", Bitheight"+overBit.getHeight());
         }catch(IOException e){ e.printStackTrace();}
+        //positions all views and adds them to the layout
         x += 3; y += 1;
         owner.setLayoutParams(new RelativeLayout.LayoutParams((int)(10*getMap().getStatusScale()), (int)(5*getMap().getStatusScale())));
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int)(overBit.getWidth()*getMap().overScale), (int)(overBit.getHeight()*getMap().overScale));

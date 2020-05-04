@@ -294,7 +294,7 @@ public class GameActivity extends BuildActivity {
     public void showInfo(Province prov){
         Log.i("showInfo", "open: " + openInfo + "from " + prov.getName());
         String infoStr = "";
-        if(!openInfo){
+        if(!openInfo){ //Update text
             info.setVisibility(View.VISIBLE);
             infoStr += "Province: "+prov.getName()+"\nTroops: "+prov.modTroops(0);
             infoStr += "\n\nContinent: " + prov.getContinent().getName() + "\nBonus: " + prov.getContinent().getBonus();
@@ -312,7 +312,7 @@ public class GameActivity extends BuildActivity {
     private void saveMaker(){
         saveOK.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //saves the file and hides
                 game.saveString();
                 if(saveInput.getText().toString().equals("") || saveInput.getText().toString().equals("autosave"))
                     Toast.makeText(context, "Type a new save name", Toast.LENGTH_SHORT);
@@ -326,7 +326,7 @@ public class GameActivity extends BuildActivity {
         });
         saveCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //hides
                 saveInput.setText("autosave");
                 saveMaker.animate().y(screenWidth+300).setDuration(500).start();
                 openSave = false;
@@ -386,12 +386,12 @@ public class GameActivity extends BuildActivity {
     /**Converts loadString into a game object
      * @return builder the loaded game*/
     private Game loadBuilder(){
-        if(get(0, 1) == 0) map = new Classic(context);
+        if(get(0, 1) == 0) map = new Classic(context); //creates game map
         else map = new Classic(context);
-        Game building = new Game(context, get(4+4*map.getList().length, 5+4*map.getList().length), get(0, 1));
+        Game building = new Game(context, get(4+4*map.getList().length, 5+4*map.getList().length), get(0, 1)); //init game
         building.setTurnNum(get(0, 3));
         for(int i=0; i<building.getMap().getList().length; i++){
-            building.getMap().getList()[i].updatePress(get(4+4*i, 5+4*i));
+            building.getMap().getList()[i].updatePress(get(4+4*i, 5+4*i)); //gives each province troops and owner
             building.getMap().getList()[i].modTroops(get(5+4*i, 8+4*i));
         }
         Log.i("building", "player strt");
@@ -399,16 +399,17 @@ public class GameActivity extends BuildActivity {
         for(int i=0; i<get(4+4*map.getList().length, 5+4*map.getList().length); i++){
             Log.i("buiding", "\""+get(i+(6+4*map.getList().length+3*building.getPlayerList().length), i+(7+4*map.getList().length+3*building.getPlayerList().length))+"\"");
             if(get(i+(6+4*map.getList().length+3*building.getPlayerList().length), i+(7+4*map.getList().length+3*building.getPlayerList().length)) == 0) {
-                building.getPlayerList()[i] = new Player(context, i);
+                building.getPlayerList()[i] = new Player(context, i); //creates player or computer
             }
             else building.getPlayerList()[i] = new Ai(context, i);
         }
         Log.i("building", "playerTings");
-        for(int i=0; i<building.getPlayerList().length; i++){
+        for(int i=0; i<building.getPlayerList().length; i++){ //sets stage and reinforcements
             building.getPlayerList()[i].setStage(get(5+4*map.getList().length+3*i, 6+4*map.getList().length+3*i));
             building.getPlayerList()[i].setTroops(get(6+4*map.getList().length+3*i, 8+4*map.getList().length+3*i));
             Log.i("building", "playerModded: " + get(6+4*map.getList().length+3*i, 8+4*map.getList().length+3*i));
         }
+        //sets current player
         building.setCurrentPlayer(get(5+4*map.getList().length+3*building.getPlayerList().length, 6+4*map.getList().length+3*building.getPlayerList().length));
         return building;
     }
@@ -448,6 +449,7 @@ public class GameActivity extends BuildActivity {
             zoomFactor = Math.max(0.1f, Math.min(zoomFactor, 3.0f));
             mapLayout.setScaleX(zoomFactor);
             mapLayout.setScaleY(zoomFactor);
+            //hides province text at certain zoom
             if(zoomFactor < 1)
                 for(Province p : map.getList())
                     p.ownerVis(false);
@@ -459,6 +461,7 @@ public class GameActivity extends BuildActivity {
     }
     /**Writes the output of game.saveString() to a file then closes it*/
     private void saveGame(String saveId){
+        //writes saveString to file with parameter name
         FileOutputStream fos;
         File save = new File(SAVE_PATH, saveId);
         saveString = game.saveString();
@@ -473,7 +476,7 @@ public class GameActivity extends BuildActivity {
     }
     /**Logic to either drag the entire map of to decide which province the user has tapped*/
     @SuppressLint("ClickableViewAccessibility")
-    protected static void touched() {
+    protected static void touched() { //pan map and detect which province has been clicked
         mapLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
@@ -492,6 +495,7 @@ public class GameActivity extends BuildActivity {
                                     for (int i = 0; i < map.getList().length; i++) {
                                         Province at = map.getList()[i];
                                         Bitmap overlay = at.getOverlay();
+                                        //checks if touch is within bitmap of province
                                         if (event.getX() > at.getX() && event.getX() < at.getX() + overlay.getWidth() * map.getOverScale()
                                                 && event.getY() > at.getY() && event.getY() < at.getY() + overlay.getHeight() * map.getOverScale()) {
                                             try {
@@ -502,6 +506,7 @@ public class GameActivity extends BuildActivity {
                                     }
                                     int minDist = Integer.MAX_VALUE;
                                     Province touched = null;
+                                    //if multiple provinces detected, touch province with closest center to touch
                                     if (choices.size() == 1) touched = choices.get(0);
                                     else if (choices.size() > 1)
                                         for (int i = 0; i < choices.size(); i++)

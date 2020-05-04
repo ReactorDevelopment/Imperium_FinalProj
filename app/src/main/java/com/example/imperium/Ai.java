@@ -120,6 +120,7 @@ public class Ai extends Player {
         double max = 0;
         Continent bestC = null;
         Province bestP = null;
+        //presses province with highest intrest value
         if(!getMap().allTaken()) {
             Log.i("Setup", "not all taken");
             for(int i=0; i<getMap().getList().length; i++){
@@ -130,6 +131,7 @@ public class Ai extends Player {
             }
         }
         max = 0;
+        //presses province with highest intrest value
         if(getMap().allTaken()) {
             Log.i("taken", "allTaken");
             for (int i = 0; i < getMap().getList().length; i++) {
@@ -148,6 +150,7 @@ public class Ai extends Player {
         Log.i("AiStaging", "place");
         double max = 0;
         while (modTroops(0) > 0) {
+            //chooses province of highest intrest from most interesting continent
             Continent bestC = null;
             for (int i = 0; i < getMap().getContinents().length; i++) {
                 Continent test = getMap().getContinents()[i];
@@ -173,6 +176,7 @@ public class Ai extends Player {
                 }
             }
             max = 0;
+            //chooses province that is threatened by most enemies
             if (bestC == null || bestP == null) {
                 for (int i = 0; i < getMap().getList().length; i++) {
                     Province test = getMap().getList()[i];
@@ -197,6 +201,7 @@ public class Ai extends Player {
         double max = 0;
         Continent bestC = null;
         Province target = null;
+        //ginds most intresting continent
         for (int i = 0; i < getMap().getContinents().length; i++) {
             Continent test = getMap().getContinents()[i];
             if (test.hasIn(calcAllOwned()) >= test.getList().length/2.0 && test.getInterest() > max) {
@@ -205,6 +210,7 @@ public class Ai extends Player {
             }
         }
         max = 0;
+        //attacks every available province in continent
         if(bestC != null){
             Log.i("bestC", "the best arouound: " + bestC.getName());
             for (int i = 0; i < bestC.getList().length; i++) {
@@ -219,6 +225,7 @@ public class Ai extends Player {
                 }
             }
         }
+        //attacks with a random province with more than 15 troops to manage escalation
         else{
             Log.i("aiAttack", "inElse");
             target = calcAllOwned()[(int)(Math.random()* calcAllOwned().length)];

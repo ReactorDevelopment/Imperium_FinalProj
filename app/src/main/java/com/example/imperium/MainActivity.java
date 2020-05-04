@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         String path = Environment.getExternalStorageDirectory().getPath()+"/Imperium";
         Log.i("path", path);
         File dir = new File(path);
+        //if dir dosent exist, make it, show a message if it fails
         if(!dir.exists()) if(!dir.mkdir()) Log.i("No", "nomake");;
         dir = new File(path+"/Saves");
         if(!dir.exists()) if(!dir.mkdir()) Log.i("No2", "nomake");

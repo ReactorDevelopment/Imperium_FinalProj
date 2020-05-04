@@ -69,7 +69,7 @@ public class Map extends Game implements Serializable {
 
         return true;
     }
-    /**Calculates the bonuses of each player basedo n how many continents they completely own*/
+    /**Calculates the bonuses of each player based on how many continents they completely own*/
     public int bonuses(Player player){
         Province[] provinces = player.calcAllOwned();
         int totalBonuses = 0;
@@ -90,7 +90,7 @@ public class Map extends Game implements Serializable {
     }
 
 
-
+    /**Uses to randomize the intrest value of a province, making every game slightly different for the Ai*/
     protected double vary(){return Math.random()*.2-.1;}
 
 }

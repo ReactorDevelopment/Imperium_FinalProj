@@ -15,9 +15,6 @@
             android:name=".OpenSaveActivity"
             android:screenOrientation="sensorPortrait" ></activity>
         <activity
-            android:name=".StatsActivity"
-            android:screenOrientation="sensorPortrait" />
-        <activity
             android:name=".BuildActivity"
             android:screenOrientation="sensorPortrait" />
         <activity
